@@ -4,11 +4,11 @@ const path = require("path")
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-console.log(process.env);
+console.log(process.env)
 
 module.exports = defineConfig({
   transpileDependencies: true,
-	// 关闭保存时候 代码格式化校验
+  // 关闭保存时候 代码格式化校验
   lintOnSave: false,
   // 在vue3.2.2以下是用baseURL
   // publicPath：是vue 3.2.2以上版本用
@@ -29,7 +29,7 @@ module.exports = defineConfig({
         target: process.env.VUE_APP_URL,
         //路径重写 ,向后端发起服务的时候,不带代理标识
         pathRewrite: {
-          ["^"+process.env.VUE_APP_IDENT]: ""
+          ["^" + process.env.VUE_APP_IDENT]: ""
         }
       }
     }
