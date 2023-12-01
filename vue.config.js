@@ -8,9 +8,10 @@ function resolve(dir) {
 // console.log(process.env)
 
 module.exports = defineConfig({
-	// 关闭保存时候 代码格式化校验
-	lintOnSave: false,
+  // 关闭保存时候 代码格式化校验
+
   transpileDependencies: true,
+  lintOnSave: false,
   // 在vue3.2.2以下是用baseURL
   // publicPath：是vue 3.2.2以上版本用
   publicPath: "/",

@@ -1,7 +1,9 @@
 import axios from "axios"
 import { Loading, MessageBox } from "element-ui"
 import DEFAULTSTATUS from "./default.js"
-let loading;
+import { removetoken, getToken } from "./auch.js"
+import router from "@/router/index.js"
+let loading
 
 let http = axios.create({
   baseURL: "/",
@@ -16,37 +18,40 @@ let http = axios.create({
 // 请求拦截器
 http.interceptors.request.use((config) => {
   loading = Loading.service({ fullscreen: true })
+  config.headers.Authorization = "bearer" + " " + getToken()
+  console.log(config.headers.Authorization)
   return config
 }),
   (err) => {
+    // 关闭loading
+    loading.close()
     return Promise.reject(err)
   }
 
+// 响应拦截器
 http.interceptors.response.use((response) => {
   // 关闭loading
   loading.close()
-  if (response.data && response.data.status === 2) {
+  if (response.data && response.data.code === 401) {
     // 401, token失效
-    /**
-     * TODO: 401用户登录
-     */
-    //  // resetLoginInfo()
-    //   router.push({
-    //     name: "login"
-    //   })
+    removetoken()
+    router.push({
+      name: "login"
+    })
   }
-  return response
+  return response.data
 }),
   (err) => {
     let title = ""
     let message = ""
-    loadingInstance.close()
+    // 关闭loading
+    loading.close()
     if (err && err.response) {
       /**后端返回的报错的信息 */
       message = err.response.data.message
       // 401, token失效
       switch (
-        err.response.status // 跨域存在获取到的状态码的情况, status(随后端定义变化而变化,code)
+        err.response.code // 跨域存在获取到的状态码的情况, status(随后端定义变化而变化,code)
       ) {
         case DEFAULTSTATUS.ERRORPRO:
           title = "错误请求"
