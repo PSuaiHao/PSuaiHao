@@ -4,10 +4,10 @@
       <h1>IHRM后台登录系统</h1>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
         <el-form-item prop="mobile">
-          <el-input v-model="ruleForm.mobile" prefix-icon="el-icon-user-solid"></el-input>
+          <el-input v-model="ruleForm.mobile"> <svg-icon slot="prefix" icon-class="yonghu" /></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="ruleForm.password" prefix-icon="el-icon-lock" show-password></el-input>
+          <el-input v-model="ruleForm.password" show-password><svg-icon slot="prefix" icon-class="mima" /></el-input>
         </el-form-item>
 
         <el-form-item>

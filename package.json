@@ -9,14 +9,21 @@
     "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "prettier": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "commit": "cz",
+    "mockExpress": "nodemon ./src/mock/serve.js"
   },
   "dependencies": {
     "axios": "^1.6.2",
     "core-js": "^3.8.3",
+    "echarts": "^5.4.3",
     "element-ui": "^2.15.14",
+    "express": "^4.18.2",
     "husky-init": "^8.0.0",
     "js-cookie": "^3.0.5",
+    "nodemon": "^3.0.2",
+    "svg-sprite-loader": "^6.0.11",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
@@ -37,10 +44,18 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^8.0.3",
     "husky": "^8.0.0",
+    "mockjs": "^1.1.0",
     "prettier": "^2.8.8",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "vue-template-compiler": "^2.6.14"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,jsx,tsx}": [
+      "prettier --write .",
+      "eslint --cache --fix",
+      "git add ."
+    ]
   },
   "config": {
     "commitizen": {

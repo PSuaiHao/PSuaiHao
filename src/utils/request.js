@@ -32,7 +32,7 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use((response) => {
   // 关闭loading
   loading.close()
-  if (response.data && response.data.code === 401) {
+  if (response.data && response.data.code === 10002) {
     // 401, token失效
     removetoken()
     router.push({
@@ -108,7 +108,7 @@ http.interceptors.response.use((response) => {
  *url : /login
  */
 http.addurl = function (url) {
-  console.log(url)
+  // console.log(url)
   console.log(process.env.VUE_APP_IDENT + url)
   return process.env.VUE_APP_IDENT + url
 }

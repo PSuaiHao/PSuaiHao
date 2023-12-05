@@ -7,6 +7,8 @@ function resolve(dir) {
 
 // console.log(process.env)
 
+const target = process.env.VUE_APP_MOCKFLAG == "true" ? process.env.VUE_APP_MOCKURL : process.env.VUE_APP_URL
+
 module.exports = defineConfig({
   // 关闭保存时候 代码格式化校验
 
@@ -20,7 +22,9 @@ module.exports = defineConfig({
   // 静态资源文件修改路径
   assetsDir: "assets",
   devServer: {
-    open: true,
+    // 修改端口号  因为后端有时只能使用8080  前端使用会造成混乱   一般不建议使用默认8080
+    port: "9999",
+    open: false,
     proxy: {
       [process.env.VUE_APP_IDENT]: {
         // 配置代理默认开启代理方式
@@ -28,7 +32,7 @@ module.exports = defineConfig({
         // 如果是http接口，需要配置该参数
         secure: false,
         // 配置代理路径
-        target: process.env.VUE_APP_URL,
+        target: target,
         //路径重写 ,向后端发起服务的时候,不带代理标识
         pathRewrite: {
           ["^" + process.env.VUE_APP_IDENT]: ""
@@ -46,5 +50,23 @@ module.exports = defineConfig({
         vue$: "vue/dist/vue.esm.js"
       }
     }
+  },
+  // loader配置
+  chainWebpack(config) {
+    // when there are many pages, it will cause too many meaningless requests
+    config.plugins.delete("prefetch")
+    // set svg-sprite-loader
+    config.module.rule("svg").exclude.add(resolve("src/icons")).end()
+    config.module
+      .rule("icons")
+      .test(/\.svg$/)
+      .include.add(resolve("src/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]"
+      })
+      .end()
   }
 })
