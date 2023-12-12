@@ -32,7 +32,7 @@
 
 <script>
 import { querydeepart, querydelete, queryht } from "@/utils/http"
-import diralog from "../components/departchildren/diralog.vue"
+import diralog from "@/components/departchildren/diralog.vue"
 export default {
   data() {
     return {

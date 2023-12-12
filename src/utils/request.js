@@ -3,6 +3,7 @@ import { Loading, MessageBox } from "element-ui"
 import DEFAULTSTATUS from "./default.js"
 import { removetoken, getToken } from "./auch.js"
 import router from "@/router/index.js"
+
 let loading
 
 let http = axios.create({
@@ -17,9 +18,10 @@ let http = axios.create({
 
 // 请求拦截器
 http.interceptors.request.use((config) => {
+
   loading = Loading.service({ fullscreen: true })
   config.headers.Authorization = "bearer" + " " + getToken()
-  console.log(config.headers.Authorization)
+  // console.log(config.headers.Authorization)
   return config
 }),
   (err) => {
@@ -49,44 +51,52 @@ http.interceptors.response.use((response) => {
     if (err && err.response) {
       /**后端返回的报错的信息 */
       message = err.response.data.message
-      // 401, token失效
+
+			//  token失效
+			if(err.response.status===DEFAULTSTATUS.UNAUTHORIZED){
+				removetoken()
+				router.push({
+					name: "login"
+				})
+			}
+
       switch (
         err.response.code // 跨域存在获取到的状态码的情况, status(随后端定义变化而变化,code)
       ) {
         case DEFAULTSTATUS.ERRORPRO:
           title = "错误请求"
           break // 停止循环
-        case 401:
+        case DEFAULTSTATUS.UNAUTHORIZED:
           title = "资源未授权"
           break
-        case 403:
+        case DEFAULTSTATUS.ACCESSFORBIDDEN:
           title = "禁止访问"
           break
-        case 404:
+        case DEFAULTSTATUS.NOTFOUND:
           title = "未找到所请求的资源"
           break
-        case 405:
+        case DEFAULTSTATUS.NOTALLOW:
           title = "不允许使用该方法"
           break
-        case 408:
+        case DEFAULTSTATUS.TIMEOUT:
           title = "请求超时"
           break
-        case 500:
+        case DEFAULTSTATUS.SERVERERROE:
           title = "内部服务器错误"
           break
-        case 501:
+        case DEFAULTSTATUS.UNREALIZED:
           title = "未实现"
           break
-        case 502:
+        case DEFAULTSTATUS.GATEWAY:
           title = "网关错误"
           break
-        case 503:
+        case DEFAULTSTATUS.SERVICEUN:
           title = "服务不可用"
           break
-        case 504:
+        case DEFAULTSTATUS.GATEWAYTIMEOUT:
           title = "网关超时"
           break
-        case 505:
+        case DEFAULTSTATUS.UNSUPPORT:
           title = "HTTP版本不受支持"
           break
         default:
@@ -109,7 +119,7 @@ http.interceptors.response.use((response) => {
  */
 http.addurl = function (url) {
   // console.log(url)
-  console.log(process.env.VUE_APP_IDENT + url)
+  // console.log(process.env.VUE_APP_IDENT + url)
   return process.env.VUE_APP_IDENT + url
 }
 

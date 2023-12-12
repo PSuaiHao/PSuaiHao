@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top hzyy">
-      <img src="../assets/微信图片_20220922141811.gif" alt="" />
+      <img src="../../assets/微信图片_20220922141811.gif" alt="" />
       <div class="right">
         <h3>早安，管理员，祝你开心每一天!</h3>
         <p>{{ username }} | {{ company }}</p>
@@ -19,7 +19,7 @@
           <ul>
             <li>
               <div class="o">
-                <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
+                <img src="../../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
                 <span>朱继柳</span>
                 发布了第1期"传智大讲堂"互动讨论获奖名单公布
               </div>
@@ -27,7 +27,7 @@
             </li>
             <li>
               <div class="o">
-                <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
+                <img src="../../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
                 <span>朱继柳</span>
                 发布了第1期"传智大讲堂"互动讨论获奖名单公布
               </div>
@@ -35,7 +35,7 @@
             </li>
             <li>
               <div class="o">
-                <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
+                <img src="../../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
                 <span>朱继柳</span>
                 发布了第1期"传智大讲堂"互动讨论获奖名单公布
               </div>
@@ -64,9 +64,7 @@
         <div class="right-bot hzyy">
           <span>帮助链接</span>
           <div class="bott">
-            <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
-            <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
-            <img src="../assets/Snipaste_2023-12-03_21-50-44.png" alt="" />
+            <img src="../../assets/common/icon.png" alt="" />
           </div>
 
           <div class="uname">
@@ -178,10 +176,9 @@ export default {
 
     .right-bot {
       margin-top: 20px;
-      img {
-        margin-top: 15px;
-        margin-left: 80px;
-      }
+     img{
+			margin: 20px 40px;
+		 }
       .uname {
         width: 89%;
         margin-top: 15px;
