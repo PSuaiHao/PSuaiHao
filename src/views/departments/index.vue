@@ -60,7 +60,6 @@ export default {
     addAndEdit(command, item) {
       console.log(command, "command")
       console.log(item, "id")
-
       if (command == "add1") {
         this.dialogtrue = true
         this.pid = item.id

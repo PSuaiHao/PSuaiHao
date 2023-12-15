@@ -8,7 +8,7 @@ import  "./style/comments.css"
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import {isAuth} from './utils/btnpermise'
-
+import './style/depart.css'
 // import VueI18n from 'vue-i18n'
 import enLocale from "element-ui/lib/locale/lang/en"
 import zhLocale from "element-ui/lib/locale/lang/zh-CN"

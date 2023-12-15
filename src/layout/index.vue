@@ -36,18 +36,9 @@
             <lang></lang>
             <div class="ic">
               <ScreenFull></ScreenFull>
+              <theme></theme>
             </div>
-            <el-dropdown trigger="click" @command="handleCommand">
-              <span class="el-dropdown-link">
-                <img src="../assets/微信图片_20220922141811.gif" alt="" /> {{ username }}
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>{{ $t("route.dashboard") }}</el-dropdown-item>
-                <el-dropdown-item> <a href="https://gitee.com/shuiruohanyu/hrsaas139">项目地址</a></el-dropdown-item>
-                <el-dropdown-item command="b">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <goout></goout>
           </div>
         </el-header>
         <el-main>
@@ -61,8 +52,8 @@
 </template>
 
 <script>
-import { queryhpage } from "@/utils/http"
-import { removetoken } from "@/utils/auch"
+import theme from "@/components/theme"
+import goout from "./goout.vue"
 import ScreenFull from "@/components/ScreenFull"
 import lang from "@/components/lang"
 import homechildren from "../components/homechildren"
@@ -73,28 +64,11 @@ export default {
       isCollapse: false
     }
   },
-  components: { ScreenFull, lang, homechildren },
+  components: { ScreenFull, lang, homechildren, goout, theme },
   methods: {
     toggleClick() {
       this.isCollapse = !this.isCollapse
-    },
-    gethpage() {
-      queryhpage().then((res) => {
-        // console.log(res.data)
-        this.username = res.data.username
-        localStorage.setItem("username", res.data.username)
-        localStorage.setItem("company", res.data.company)
-      })
-    },
-    handleCommand(command) {
-      if (command == "b") {
-        removetoken()
-        this.$router.push("/login")
-      }
     }
-  },
-  created() {
-    this.gethpage()
   }
 }
 </script>
@@ -102,8 +76,7 @@ export default {
 <style lang="scss" scoped>
 .el-aside {
   height: 100vh;
-  background: url("../assets/common/leftnavBg.png") no-repeat 0 100%,
-    -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
+  background: url("../assets/common/leftnavBg.png") no-repeat 0 100%, -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
   transition: width 0.28s;
   background-color: transparent;
   height: 100vh;
@@ -144,12 +117,6 @@ export default {
   .right {
     display: flex;
     align-items: center;
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      vertical-align: middle;
-    }
     .ic {
       margin: 0 15px;
     }

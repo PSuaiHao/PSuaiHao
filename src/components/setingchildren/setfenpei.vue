@@ -41,8 +41,6 @@ export default {
  methods: {
 	//
 	onNodeCheck(ii){
-      console.log(ii,'ii');
-			console.log(this.checkeddata,'88');
 	},
 	handleadd(){
 		queryrolesqx({id:this.id,permIds:this.$refs.mytree.getCheckedKeys()}).then(res=>{

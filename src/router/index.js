@@ -1,10 +1,10 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-import Layout from '@/layout'
-import store from '@/store'
+import Layout from "@/layout"
+import store from "@/store"
 import { getToken } from "../utils/auch"
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+import NProgress from "nprogress"
+import "nprogress/nprogress.css"
 
 Vue.use(VueRouter)
 
@@ -21,11 +21,16 @@ const routes = [
         path: "/dashboard",
         name: "dashboard",
         component: () => import("../views/dashboard/index"),
-				meta: { title: "首页", icon: "menu", isAthoout: false }
-      }
+        meta: { title: "首页", icon: "menu", isAthoout: false }
+      },
+			{
+				path: "/empldetail",
+				name: "empldetail",
+				component: () => import("../views/employees/empldetail")
+			}
     ]
   },
-  {
+	{
     path: "/about",
     name: "about",
     component: () => import("../views/AboutView.vue")
@@ -70,35 +75,33 @@ const router = new VueRouter({
  */
 
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   let tokens = getToken()
-	NProgress.start()
-  if(!tokens){
-		if(to.path!=='/login'){
-			next({path:'/login'})
-		}else{
-			next()
-		}
-	}else{
-		setTimeout(()=>{
-			  // 没有处理的初始化动态路由信息
-				let initDynamic = store.state.menu.newList
-				let Dynamic = []
-				initDynamic.forEach((childRoute)=>{
-					let item={
-						path: "/"+childRoute.code,
-						name: childRoute.code,
-						component: () => import(`@/views/${childRoute.code}/index.vue`),
-						meta: { title: childRoute.name, icon: "menu" }
-					}
-					router.addRoute('layout',item)
-					Dynamic.push(item)
-				})
-				Dynamic.unshift(Dashboard)
+  if (!tokens && to.path != "/login") {
+    next("/login")
+  } else if (tokens && to.path == "/login") {
+    next("/")
+  } else {
+    next()
+  }
+  setTimeout(() => {
+    // 没有处理的初始化动态路由信息
+    let initDynamic = store.state.menu.newList
+    let Dynamic = []
+    initDynamic.forEach((childRoute) => {
+      let item = {
+        path: "/" + childRoute.code,
+        name: childRoute.code,
+        component: () => import(`@/views/${childRoute.code}/index.vue`),
+        meta: { title: childRoute.name, icon: "menu" }
+      }
+      router.addRoute("layout", item)
+      Dynamic.push(item)
+    })
+    Dynamic.unshift(Dashboard)
 
-				localStorage.setItem("Routes", JSON.stringify(Dynamic))
-		},1000)
-		next()
-	}
+    localStorage.setItem("Routes", JSON.stringify(Dynamic))
+  }, 3000)
 })
 
 router.afterEach(() => {

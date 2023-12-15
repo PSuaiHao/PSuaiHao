@@ -3,8 +3,8 @@
     <div class="top hzyy">
       <img src="../../assets/微信图片_20220922141811.gif" alt="" />
       <div class="right">
-        <h3>早安，管理员，祝你开心每一天!</h3>
-        <p>{{ username }} | {{ company }}</p>
+        <h3>早安，{{username}}，祝你开心每一天!</h3>
+        <p>{{ userInfo.username }} | {{ userInfo.company }} - {{ userInfo.departmentName }}</p>
       </div>
     </div>
     <div class="bottom">
@@ -77,119 +77,29 @@
     </div>
   </div>
 </template>
-
 <script>
 import calendar from "@/components/calendar.vue"
 import radar from "@/components/radar.vue"
+import { mapActions, mapGetters } from "vuex"
+import depart from '@/style/depart.css'
 export default {
   data() {
     return {
-      username: localStorage.getItem("username") || "",
-      company: localStorage.getItem("company") || "",
       calendart: new Date()
     }
   },
-  methods: {},
-  created() {},
+  methods: {
+		...mapActions("users", ["getUserInfo"])
+	},
+	computed:{
+		...mapGetters(["username", "staffPhoto", "userInfo"])
+	},
+  created() {
+		this.getUserInfo()
+	},
   components: { calendar, radar }
 }
 </script>
-
 <style lang="scss" scoped>
-.top {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  p {
-    margin-top: 8px;
-  }
-}
-.bottom {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  .bt-left,
-  .bt-right {
-    width: 49%;
-  }
-  .bt-left {
-    .gg {
-      margin-bottom: 15px;
-    }
-    .left-bot {
-      margin-top: 15px;
-      width: 100%;
 
-      ul {
-        padding: 15px;
-        li {
-          width: 100%;
-          border-bottom: 1px solid #ccc;
-          img {
-            vertical-align: middle;
-          }
-          .t {
-            padding-left: 70px;
-          }
-        }
-      }
-    }
-  }
-  .bt-right {
-    .right-middle > h3 {
-      margin: 10px;
-    }
-    span {
-      font-size: 26px;
-      border-bottom: 5px solid #8a97f8;
-      padding-bottom: 15px;
-    }
-    .right-top {
-      margin-bottom: 15px;
-      .nav {
-        margin-top: 30px;
-        width: 100%;
-        display: flex;
-        div {
-          margin-right: 10px;
-          border: 1px solid #ccc;
-          padding: 10px 20px;
-          border-radius: 3px;
-        }
-        div:hover {
-          margin-right: 10px;
-          padding: 10px 20px;
-          border-radius: 3px;
-          border: 1px solid #c6e2ff;
-          background-color: #ecf5ff;
-          color: #0095ff;
-        }
-      }
-    }
-
-    .right-bot {
-      margin-top: 20px;
-     img{
-			margin: 20px 40px;
-		 }
-      .uname {
-        width: 89%;
-        margin-top: 15px;
-        margin-left: 80px;
-        display: flex;
-        justify-content: space-between;
-        .name {
-          margin-right: 100px;
-        }
-      }
-    }
-  }
-}
 </style>

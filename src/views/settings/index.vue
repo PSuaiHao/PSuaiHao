@@ -7,18 +7,7 @@
             <el-button type="primary" @click="logtrue = true">新增角色</el-button>
           </div>
           <!-- 表格 -->
-          <el-table :data="rolelist" style="width: 100%" border>
-            <el-table-column align="center" type="index" label="序号" width="180"> </el-table-column>
-            <el-table-column align="center" prop="name" label="名称" width="180"> </el-table-column>
-            <el-table-column align="center" prop="description" label="描述"> </el-table-column>
-            <el-table-column align="center" label="操作">
-              <template slot-scope="scope" align="center">
-                <el-button size="mini" type="success" @click="handlefenpei(scope.row.id)">分配权限</el-button>
-                <el-button size="mini" type="primary" @click="handleEdit(scope.row.id)">编辑</el-button>
-                <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <setable ref="setable" @handlefenpei="handlefenpei" @handleEdit="handleEdit" @handleDelete="handleDelete"></setable>
           <!-- 分页 -->
           <div class="bottom">
             <el-pagination
@@ -40,20 +29,19 @@
     </div>
     <!-- 弹出框 -->
     <setdialog v-if="logtrue" ref="setdialog" @close="close" @add="add" :title="title" @edit="edit"></setdialog>
-    <setfenpei @close1="close1" ref="setfenpeis" v-if="qxtrue" :id="id" @add1="add1"></setfenpei>
+    <setfenpei @close="close1" ref="setfenpeis" v-if="qxtrue" :id="id"></setfenpei>
   </div>
 </template>
-
 <script>
 import gsxx from "@/components/setingchildren/gsxx.vue"
 import setdialog from "@/components/setingchildren/setdialog.vue"
 import setfenpei from "@/components/setingchildren/setfenpei.vue"
+import setable from "@/components/setingchildren/setable.vue"
 import { queryrole, querydelrole, queryroleht } from "../../utils/http"
 export default {
   data() {
     return {
       activeName: "first",
-      rolelist: [],
       logtrue: false,
       formInline: {
         pagesize: 10,
@@ -65,12 +53,9 @@ export default {
       id: ""
     }
   },
-  components: { setdialog, setfenpei, gsxx },
+  components: { setdialog, setfenpei, gsxx, setable },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, "tab")
-      console.log(event, "event")
-    },
+    handleClick(tab, event) {},
     // 编辑
     handleEdit(id) {
       this.logtrue = true
@@ -82,27 +67,10 @@ export default {
     },
     // 删除
     handleDelete(id) {
-      this.$confirm("确定删除该角色吗?", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          querydelrole(id).then((res) => {
+			querydelrole(id).then((res) => {
             console.log(res, "删除")
           })
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          })
           this.getrole()
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          })
-        })
     },
     // 分配回填
     handlefenpei(id) {
@@ -110,14 +78,9 @@ export default {
       this.id = id
     },
     // 权限关闭
-    add1() {
-      this.qxtrue = false
-    },
+
     close() {
       this.logtrue = false
-    },
-    close1() {
-      this.qxtrue = false
     },
     // 刷新
     add() {
@@ -131,11 +94,12 @@ export default {
     },
     // 获取接口
     getrole() {
-      queryrole(this.formInline).then((res) => {
+				queryrole(this.formInline).then((res) => {
         this.total = res.data.total
-        this.rolelist = res.data.rows
-        console.log(this.rolelist)
+				this.$refs.setable.rolelist=res.data.rows
+        console.log(this.$refs.setable.rolelist)
       })
+
     }
   },
   created() {
@@ -143,11 +107,7 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
-.el-tabs__item {
-  font-size: 30px !important;
-}
 .bottom {
   text-align: center;
 }

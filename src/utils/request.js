@@ -4,7 +4,7 @@ import DEFAULTSTATUS from "./default.js"
 import { removetoken, getToken } from "./auch.js"
 import router from "@/router/index.js"
 
-let loading
+// let loading
 
 let http = axios.create({
   baseURL: "/",
@@ -19,27 +19,25 @@ let http = axios.create({
 // 请求拦截器
 http.interceptors.request.use((config) => {
 
-  loading = Loading.service({ fullscreen: true })
+  // loading = Loading.service({ fullscreen: true })
   config.headers.Authorization = "bearer" + " " + getToken()
   // console.log(config.headers.Authorization)
   return config
 }),
   (err) => {
     // 关闭loading
-    loading.close()
+    // loading.close()
     return Promise.reject(err)
   }
 
 // 响应拦截器
 http.interceptors.response.use((response) => {
   // 关闭loading
-  loading.close()
+  // loading.close()
   if (response.data && response.data.code === 10002) {
     // 401, token失效
     removetoken()
-    router.push({
-      name: "login"
-    })
+    router.push("/login")
   }
   return response.data
 }),
@@ -47,7 +45,7 @@ http.interceptors.response.use((response) => {
     let title = ""
     let message = ""
     // 关闭loading
-    loading.close()
+    // loading.close()
     if (err && err.response) {
       /**后端返回的报错的信息 */
       message = err.response.data.message
@@ -55,9 +53,7 @@ http.interceptors.response.use((response) => {
 			//  token失效
 			if(err.response.status===DEFAULTSTATUS.UNAUTHORIZED){
 				removetoken()
-				router.push({
-					name: "login"
-				})
+				router.push("/login")
 			}
 
       switch (

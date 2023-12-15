@@ -3,9 +3,7 @@
     <div class="top hzyy">
       <el-button type="primary" @click="handleClick">添加权限</el-button>
     </div>
-
     <el-table
-
       :data="tableData"
       style="width: 100%"
       row-key="id"
@@ -110,7 +108,6 @@ export default {
 	}
 }
 </script>
-
 <style lang="scss" scoped>
 .top {
   text-align: right;

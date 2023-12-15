@@ -4,7 +4,8 @@ const state={
 	menuList:[],
 	// 个人
 	userList:[],
-	newList:[]
+	newList:[],
+	permission:[],
 }
 
 const mutations={
